@@ -4,6 +4,7 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+const btnRestart = document.querySelector('#restart');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
 const spanRecord = document.querySelector('#record');
@@ -13,6 +14,7 @@ let canvasSize;
 let elementsSize;
 let level = 0;
 let lives = 3;
+let collision = false;
 
 let timeStart;
 let timePlayer;
@@ -116,7 +118,13 @@ function movePlayer() {
     });
 
     if (enemyCollision) {
-        levelFail();
+        game.fillText(emojis['BOMB_COLLISION'], calculatePlayerPosition(playerPositionMultiplier.x), calculatePlayerPosition(playerPositionMultiplier.y));
+        collision = true;
+        setTimeout(() => {
+            collision = false;
+            levelFail();
+        }, 1000);
+        return;
     }
 
     game.fillText(emojis['PLAYER'], calculatePlayerPosition(playerPositionMultiplier.x), calculatePlayerPosition(playerPositionMultiplier.y));
@@ -182,12 +190,15 @@ btnUp.addEventListener('click', moveUp);
 btnLeft.addEventListener('click', moveLeft);
 btnRight.addEventListener('click', moveRight);
 btnDown.addEventListener('click', moveDown);
+btnRestart.addEventListener('click', restartGame);
 
 function moveByKeys(event) {
-    if (event.key == 'ArrowUp') moveUp();
-    if (event.key == 'ArrowLeft') moveLeft();
-    if (event.key == 'ArrowRight') moveRight();
-    if (event.key == 'ArrowDown') moveDown();
+    if (!collision) {        
+        if (event.key == 'ArrowUp') moveUp();
+        if (event.key == 'ArrowLeft') moveLeft();
+        if (event.key == 'ArrowRight') moveRight();
+        if (event.key == 'ArrowDown') moveDown();
+    }
 }
 
 function moveUp() {
@@ -220,4 +231,8 @@ function moveDown() {
 
 function calculatePlayerPosition(multiplier) {
     return elementsSize * multiplier;
+}
+
+function restartGame() {
+    location.reload();
 }
