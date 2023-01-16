@@ -63,7 +63,7 @@ function startGame() {
 
     if (!timeStart) {
         timeStart = Date.now();
-        timeInterval = setInterval(showTime, 100);
+        timeInterval = setInterval(showTime, 1);
         showRecord();
     }
 
@@ -173,6 +173,7 @@ function gameWin() {
         if (recordTime >= playerTime) {
             localStorage.setItem('record_time', playerTime);
             pResult.innerHTML = 'Superaste el record!';
+            spanRecord.innerHTML = playerTime;
         } else {
             pResult.innerHTML = 'Lo siento, no superaste el record!';
         }
@@ -181,6 +182,7 @@ function gameWin() {
         spanRecord.innerHTML = playerTime;
         pResult.innerHTML = 'Has establecido un nuevo record!';
     }
+    spanTime.innerHTML = playerTime;
     console.log('recordTime: ', recordTime);
     console.log('PlayerTime: ', playerTime);
 }
